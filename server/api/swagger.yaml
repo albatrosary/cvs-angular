@@ -1,0 +1,2299 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: "Custom Vision Training 1.2"
+host: "southcentralus.api.cognitive.microsoft.com"
+basePath: "/customvision/v1.2/Training"
+schemes:
+- "https"
+security:
+- apiKeyHeader:
+  - "e9b1d79f98294687bf60eef35102d55c"
+  - "3a9146cc607a47f7b727b462ccb5aa86"
+- apiKeyQuery:
+  - "e9b1d79f98294687bf60eef35102d55c"
+  - "3a9146cc607a47f7b727b462ccb5aa86"
+paths:
+  /projects/{projectId}/images:
+    post:
+      summary: "CreateImagesFromData"
+      description: "This API accepts body content as multipart/form-data and application/octet-stream.\
+        \ When using multipart\r\nmultiple image files can be sent at once, with a\
+        \ maximum of 64 files"
+      operationId: "createImagesFromData"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "tagIds"
+        in: "query"
+        description: "The tags ids with which to tag each image. Limited to 20"
+        required: false
+        type: "string"
+      - name: "imageData"
+        in: "formData"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ImageCreateSummary"
+      x-swagger-router-controller: "Default"
+    delete:
+      summary: "DeleteImages"
+      description: "Delete images from the set of training images"
+      operationId: "deleteImages"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "imageIds"
+        in: "query"
+        description: "Ids of the images to be deleted. Limted to 256 images per batch"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "No Content"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/images/files:
+    post:
+      summary: "CreateImagesFromFiles"
+      description: "Add the provided batch of images to the set of training images"
+      operationId: "createImagesFromFiles"
+      consumes:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "imageFileCreateBatch"
+        description: "The batch of image files to add. Limited to 64 images and 20\
+          \ tags per batch"
+        required: false
+        schema:
+          $ref: "#/definitions/ImageFileCreateBatch"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ImageCreateSummary"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/images/predictions:
+    post:
+      summary: "CreateImagesFromPredictions"
+      description: "Add the specified predicted images to the set of training images"
+      operationId: "createImagesFromPredictions"
+      consumes:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "imageIdCreateBatch"
+        description: "Image and tag ids. Limted to 64 images and 20 tags per batch"
+        required: false
+        schema:
+          $ref: "#/definitions/ImageIdCreateBatch"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ImageCreateSummary"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/images/urls:
+    post:
+      summary: "CreateImagesFromUrls"
+      description: "Add the provided images urls to the set of training images"
+      operationId: "createImagesFromUrls"
+      consumes:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "imageUrlCreateBatch"
+        description: "Image urls and tag ids. Limited to 64 images and 20 tags per\
+          \ batch"
+        required: false
+        schema:
+          $ref: "#/definitions/ImageUrlCreateBatch"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ImageCreateSummary"
+      x-swagger-router-controller: "Default"
+  /projects:
+    get:
+      summary: "GetProjects"
+      description: "Get your projects"
+      operationId: "getProjects"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ProjectArray"
+      x-swagger-router-controller: "Default"
+    post:
+      summary: "CreateProject"
+      description: "Create a project"
+      operationId: "createProject"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Name of the project"
+        required: true
+        type: "string"
+      - name: "description"
+        in: "query"
+        description: "The description of the project"
+        required: false
+        type: "string"
+      - name: "domainId"
+        in: "query"
+        description: "Format - uuid. The id of the domain to use for this project.\
+          \ Defaults to General"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Project"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/tags:
+    get:
+      summary: "GetTags"
+      description: "Get the tags for a given project and iteration"
+      operationId: "getTags"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "iterationId"
+        in: "query"
+        description: "Format - uuid. The iteration id. Defaults to workspace"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/TagList"
+      x-swagger-router-controller: "Default"
+    post:
+      summary: "CreateTag"
+      description: "Create a tag for the project"
+      operationId: "createTag"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "name"
+        in: "query"
+        description: "The tag name"
+        required: true
+        type: "string"
+      - name: "description"
+        in: "query"
+        description: "Optional description for the tag"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Tag"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/images/tags:
+    post:
+      summary: "PostImageTags"
+      description: "Associate a set of images with a set of tags"
+      operationId: "postImageTags"
+      consumes:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "imageTagCreateBatch"
+        description: "Batch of image tags. Limited to 128 tags per batch"
+        required: false
+        schema:
+          $ref: "#/definitions/ImageTagCreateBatch"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ImageTagCreateSummary"
+      x-swagger-router-controller: "Default"
+    delete:
+      summary: "DeleteImageTags"
+      description: "Remove a set of tags from a set of images"
+      operationId: "deleteImageTags"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "imageIds"
+        in: "query"
+        description: "Image ids. Limited to 64 images"
+        required: true
+        type: "string"
+      - name: "tagIds"
+        in: "query"
+        description: "Tags to be deleted from the specified images. Limted to 20 tags"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "No Content"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/iterations/{iterationId}:
+    get:
+      summary: "GetIteration"
+      description: "Get a specific iteration"
+      operationId: "getIteration"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The id of the project the iteration belongs to"
+        required: true
+        type: "string"
+      - name: "iterationId"
+        in: "path"
+        description: "Format - uuid. The id of the iteration to get"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Iteration"
+      x-swagger-router-controller: "Default"
+    delete:
+      summary: "DeleteIteration"
+      description: "Delete a specific iteration of a project"
+      operationId: "deleteIteration"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "iterationId"
+        in: "path"
+        description: "Format - uuid. The iteration id"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "No Content"
+      x-swagger-router-controller: "Default"
+    patch:
+      summary: "UpdateIteration"
+      description: "Update a specific iteration"
+      operationId: "updateIteration"
+      consumes:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. Project id"
+        required: true
+        type: "string"
+      - name: "iterationId"
+        in: "path"
+        description: "Format - uuid. Iteration id"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "iteration"
+        description: "The updated iteration model"
+        required: false
+        schema:
+          $ref: "#/definitions/Iteration"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Iteration"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/predictions:
+    delete:
+      summary: "DeletePrediction"
+      description: "Delete a set of predicted images and their associated prediction\
+        \ results"
+      operationId: "deletePrediction"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "ids"
+        in: "query"
+        description: "The prediction ids. Limited to 64"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "No Content"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}:
+    get:
+      summary: "GetProject"
+      description: "Get a specific project"
+      operationId: "getProject"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The id of the project to get"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Project"
+      x-swagger-router-controller: "Default"
+    delete:
+      summary: "DeleteProject"
+      description: "Delete a specific project"
+      operationId: "deleteProject"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "No Content"
+      x-swagger-router-controller: "Default"
+    patch:
+      summary: "UpdateProject"
+      description: "Update a specific project"
+      operationId: "updateProject"
+      consumes:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The id of the project to update"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "project"
+        description: "The updated project model"
+        required: false
+        schema:
+          $ref: "#/definitions/Project"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Project"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/tags/{tagId}:
+    get:
+      summary: "GetTag"
+      description: "Get information about a specific tag"
+      operationId: "getTag"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project this tag belongs to"
+        required: true
+        type: "string"
+      - name: "tagId"
+        in: "path"
+        description: "Format - uuid. The tag id"
+        required: true
+        type: "string"
+      - name: "iterationId"
+        in: "query"
+        description: "Format - uuid. The iteration to retrieve this tag from. Optional,\
+          \ defaults to current training set"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Tag"
+      x-swagger-router-controller: "Default"
+    delete:
+      summary: "DeleteTag"
+      description: "Delete a tag from the project"
+      operationId: "deleteTag"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "tagId"
+        in: "path"
+        description: "Format - uuid. Id of the tag to be deleted"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "No Content"
+      x-swagger-router-controller: "Default"
+    patch:
+      summary: "UpdateTag"
+      description: "Update a tag"
+      operationId: "updateTag"
+      consumes:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "tagId"
+        in: "path"
+        description: "Format - uuid. The id of the target tag"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "tag"
+        description: "The updated tag model"
+        required: false
+        schema:
+          $ref: "#/definitions/Tag"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Tag"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/iterations/{iterationId}/export:
+    get:
+      summary: "GetExports"
+      description: "Get the list of exports for a specific iteration"
+      operationId: "getExports"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "iterationId"
+        in: "path"
+        description: "Format - uuid. The iteration id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ExportArray"
+      x-swagger-router-controller: "Default"
+    post:
+      summary: "ExportIteration"
+      description: "Export a trained iteration"
+      operationId: "exportIteration"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "iterationId"
+        in: "path"
+        description: "Format - uuid. The iteration id"
+        required: true
+        type: "string"
+      - name: "platform"
+        in: "query"
+        description: "The target platform (coreml or tensorflow)"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Export"
+      x-swagger-router-controller: "Default"
+  /account:
+    get:
+      summary: "GetAccountInfo"
+      description: "Get basic information about your account"
+      operationId: "getAccountInfo"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Account"
+      x-swagger-router-controller: "Default"
+  /domains/{domainId}:
+    get:
+      summary: "GetDomain"
+      description: "Get information about a specific domain"
+      operationId: "getDomain"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "domainId"
+        in: "path"
+        description: "Format - uuid. The id of the domain to get information about"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Domain"
+      x-swagger-router-controller: "Default"
+  /domains:
+    get:
+      summary: "GetDomains"
+      description: "Get a list of the available domains"
+      operationId: "getDomains"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/DomainArray"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/iterations/{iterationId}/performance:
+    get:
+      summary: "GetIterationPerformance"
+      description: "Get detailed performance information about a trained iteration"
+      operationId: "getIterationPerformance"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "iterationId"
+        in: "path"
+        description: "Format - uuid. The id of the trained iteration"
+        required: true
+        type: "string"
+      - name: "threshold"
+        in: "query"
+        description: "Format - float. The 0 to 1 threshold to determine positive prediction"
+        required: true
+        type: "number"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/IterationPerformance"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/iterations:
+    get:
+      summary: "GetIterations"
+      description: "Get iterations for the project"
+      operationId: "getIterations"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/IterationArray"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/images/tagged:
+    get:
+      summary: "GetTaggedImages"
+      description: "This API supports batching and range selection. By default it\
+        \ will only return first 50 images matching images.\r\nUse the {take} and\
+        \ {skip} parameters to control how many images to return in a given batch.\r\
+        \nThe filtering is on an and/or relationship. For example, if the provided\
+        \ tag ids are for the \"Dog\" and\r\n\"Cat\" tags, then only images tagged\
+        \ with Dog and/or Cat will be returned"
+      operationId: "getTaggedImages"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "iterationId"
+        in: "query"
+        description: "Format - uuid. The iteration id. Defaults to workspace"
+        required: false
+        type: "string"
+      - name: "tagIds"
+        in: "query"
+        description: "An list of tags ids to filter the images. Defaults to all tagged\
+          \ images when null. Limited to 20"
+        required: false
+        type: "string"
+      - name: "orderBy"
+        in: "query"
+        description: "The ordering. Defaults to newest"
+        required: false
+        type: "string"
+        enum:
+        - "Newest"
+        - "Oldest"
+      - name: "take"
+        in: "query"
+        description: "Format - int32. Maximum number of images to return. Defaults\
+          \ to 50, limited to 256"
+        required: false
+        type: "integer"
+        default: 50
+      - name: "skip"
+        in: "query"
+        description: "Format - int32. Number of images to skip before beginning the\
+          \ image batch. Defaults to 0"
+        required: false
+        type: "integer"
+        default: 0
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ImageArray"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/images/untagged:
+    get:
+      summary: "GetUntaggedImages"
+      description: "This API supports batching and range selection. By default it\
+        \ will only return first 50 images matching images.\r\nUse the {take} and\
+        \ {skip} parameters to control how many images to return in a given batch."
+      operationId: "getUntaggedImages"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "iterationId"
+        in: "query"
+        description: "Format - uuid. The iteration id. Defaults to workspace"
+        required: false
+        type: "string"
+      - name: "orderBy"
+        in: "query"
+        description: "The ordering. Defaults to newest"
+        required: false
+        type: "string"
+        enum:
+        - "Newest"
+        - "Oldest"
+      - name: "take"
+        in: "query"
+        description: "Format - int32. Maximum number of images to return. Defaults\
+          \ to 50, limited to 256"
+        required: false
+        type: "integer"
+        default: 50
+      - name: "skip"
+        in: "query"
+        description: "Format - int32. Number of images to skip before beginning the\
+          \ image batch. Defaults to 0"
+        required: false
+        type: "integer"
+        default: 0
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ImageArray"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/predictions/query:
+    post:
+      summary: "QueryPredictionResults"
+      description: "Get images that were sent to your prediction endpoint"
+      operationId: "queryPredictionResults"
+      consumes:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "predictionQueryToken"
+        description: "Parameters used to query the predictions. Limited to combining\
+          \ 2 tags"
+        required: false
+        schema:
+          $ref: "#/definitions/PredictionQueryToken"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/PredictionQuery"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/quicktest/image:
+    post:
+      summary: "QuickTestImage"
+      description: "Quick test an image"
+      operationId: "quickTestImage"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      - name: "iterationId"
+        in: "query"
+        description: "Format - uuid. Optional. Specifies the id of a particular iteration\
+          \ to evaluate against.\r\n            The default iteration for the project\
+          \ will be used when not specified."
+        required: false
+        type: "string"
+      - name: "imageData"
+        in: "formData"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ImagePredictionResult"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/quicktest/url:
+    post:
+      summary: "QuickTestImageUrl"
+      description: "Quick test an image url"
+      operationId: "quickTestImageUrl"
+      consumes:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project to evaluate against"
+        required: true
+        type: "string"
+      - name: "iterationId"
+        in: "query"
+        description: "Format - uuid. Optional. Specifies the id of a particular iteration\
+          \ to evaluate against.\r\n            The default iteration for the project\
+          \ will be used when not specified."
+        required: false
+        type: "string"
+      - in: "body"
+        name: "imageUrl"
+        description: "An {Iris.Web.Api.Models.ImageUrl} that contains the url of the\
+          \ image to be evaluated"
+        required: false
+        schema:
+          $ref: "#/definitions/ImageUrl"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ImagePredictionResult"
+      x-swagger-router-controller: "Default"
+  /projects/{projectId}/train:
+    post:
+      summary: "TrainProject"
+      description: "Queues project for training"
+      operationId: "trainProject"
+      produces:
+      - "application/json"
+      - "text/json"
+      - "application/xml"
+      - "text/xml"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Format - uuid. The project id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Iteration"
+      x-swagger-router-controller: "Default"
+securityDefinitions:
+  apiKeyHeader:
+    type: "apiKey"
+    name: "Training-key"
+    in: "header"
+  apiKeyQuery:
+    type: "apiKey"
+    name: "Training-key"
+    in: "query"
+definitions:
+  Account:
+    type: "object"
+    properties:
+      UserName:
+        type: "string"
+        description: "Gets the name of the account owner"
+        readOnly: true
+        x-nullable: true
+      Email:
+        type: "string"
+        description: "Gets the email associated with this account"
+        readOnly: true
+        x-nullable: true
+      Keys:
+        description: "Gets the api keys associated with this account"
+        $ref: "#/definitions/ApiKeys"
+      Quotas:
+        description: "Gets the quotas associated with this account"
+        $ref: "#/definitions/AccountQuota"
+    description: "Represents a user account"
+    example:
+      UserName: "UserName"
+      Email: "Email"
+      Quotas:
+        Tier: "Tier"
+        Predictions:
+          Used: 6
+          Total: 0
+          TimeUntilReset: "TimeUntilReset"
+        Projects:
+          Used: 6
+          Total: 0
+          TimeUntilReset: "TimeUntilReset"
+        PerProject:
+        - Images:
+            Used: 6
+            Total: 0
+            TimeUntilReset: "TimeUntilReset"
+          ProjectId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          Iterations:
+            Used: 6
+            Total: 0
+            TimeUntilReset: "TimeUntilReset"
+          Tags:
+            Used: 6
+            Total: 0
+            TimeUntilReset: "TimeUntilReset"
+        - Images:
+            Used: 6
+            Total: 0
+            TimeUntilReset: "TimeUntilReset"
+          ProjectId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          Iterations:
+            Used: 6
+            Total: 0
+            TimeUntilReset: "TimeUntilReset"
+          Tags:
+            Used: 6
+            Total: 0
+            TimeUntilReset: "TimeUntilReset"
+      Keys:
+        TrainingKeys:
+          SecondaryKey: "SecondaryKey"
+          PrimaryKey: "PrimaryKey"
+        PredictionKeys:
+          SecondaryKey: "SecondaryKey"
+          PrimaryKey: "PrimaryKey"
+    x-nullable: true
+  ApiKeys:
+    type: "object"
+    properties:
+      TrainingKeys:
+        $ref: "#/definitions/KeyPair"
+      PredictionKeys:
+        $ref: "#/definitions/KeyPair"
+    example:
+      TrainingKeys:
+        SecondaryKey: "SecondaryKey"
+        PrimaryKey: "PrimaryKey"
+      PredictionKeys:
+        SecondaryKey: "SecondaryKey"
+        PrimaryKey: "PrimaryKey"
+    x-nullable: true
+  AccountQuota:
+    type: "object"
+    properties:
+      Tier:
+        type: "string"
+        description: "Gets the tier of user"
+        readOnly: true
+        x-nullable: true
+      Projects:
+        description: "Gets the project quota"
+        $ref: "#/definitions/Quota"
+      Predictions:
+        description: "Gets the prediction quota"
+        $ref: "#/definitions/Quota"
+      PerProject:
+        type: "array"
+        description: "Gets a list of quotas that apply per-project for each project"
+        items:
+          $ref: "#/definitions/PerProjectQuota"
+        x-nullable: true
+    description: "Represents a set of quotas assocated with an account"
+    example:
+      Tier: "Tier"
+      Predictions:
+        Used: 6
+        Total: 0
+        TimeUntilReset: "TimeUntilReset"
+      Projects:
+        Used: 6
+        Total: 0
+        TimeUntilReset: "TimeUntilReset"
+      PerProject:
+      - Images:
+          Used: 6
+          Total: 0
+          TimeUntilReset: "TimeUntilReset"
+        ProjectId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Iterations:
+          Used: 6
+          Total: 0
+          TimeUntilReset: "TimeUntilReset"
+        Tags:
+          Used: 6
+          Total: 0
+          TimeUntilReset: "TimeUntilReset"
+      - Images:
+          Used: 6
+          Total: 0
+          TimeUntilReset: "TimeUntilReset"
+        ProjectId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Iterations:
+          Used: 6
+          Total: 0
+          TimeUntilReset: "TimeUntilReset"
+        Tags:
+          Used: 6
+          Total: 0
+          TimeUntilReset: "TimeUntilReset"
+    x-nullable: true
+  KeyPair:
+    type: "object"
+    properties:
+      PrimaryKey:
+        type: "string"
+        x-nullable: true
+      SecondaryKey:
+        type: "string"
+        x-nullable: true
+    example:
+      SecondaryKey: "SecondaryKey"
+      PrimaryKey: "PrimaryKey"
+    x-nullable: true
+  Quota:
+    type: "object"
+    properties:
+      Total:
+        type: "integer"
+        format: "int32"
+        description: "The total allowable amount in the quota"
+        readOnly: true
+        x-nullable: false
+      Used:
+        type: "integer"
+        format: "int32"
+        description: "The amount of quota that has currently been used"
+        readOnly: true
+        x-nullable: false
+      TimeUntilReset:
+        type: "string"
+        format: "duration"
+        description: "Gets the time remaining until the quota resets. Null if this\
+          \ quota does not reset."
+        readOnly: true
+        x-nullable: true
+    description: "Represents a quota"
+    example:
+      Used: 6
+      Total: 0
+      TimeUntilReset: "TimeUntilReset"
+    x-nullable: true
+  PerProjectQuota:
+    type: "object"
+    properties:
+      ProjectId:
+        type: "string"
+        format: "uuid"
+        description: "Gets the project id of the project this quota applies to"
+        readOnly: true
+        x-nullable: false
+      Iterations:
+        description: "Gets the iteration quota for the project"
+        $ref: "#/definitions/Quota"
+      Images:
+        description: "Gets the image quota for the project"
+        $ref: "#/definitions/Quota"
+      Tags:
+        description: "Gets the tag quota for the project"
+        $ref: "#/definitions/Quota"
+    description: "Represents a set of quotas for a given project"
+    example:
+      Images:
+        Used: 6
+        Total: 0
+        TimeUntilReset: "TimeUntilReset"
+      ProjectId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Iterations:
+        Used: 6
+        Total: 0
+        TimeUntilReset: "TimeUntilReset"
+      Tags:
+        Used: 6
+        Total: 0
+        TimeUntilReset: "TimeUntilReset"
+    x-nullable: true
+  Domain:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      Name:
+        type: "string"
+        readOnly: true
+        x-nullable: true
+      Exportable:
+        type: "boolean"
+        readOnly: true
+        x-nullable: false
+    example:
+      Exportable: true
+      Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Name: "Name"
+    x-nullable: true
+  Image:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      Created:
+        type: "string"
+        format: "date-time"
+        readOnly: true
+        x-nullable: false
+      Width:
+        type: "integer"
+        format: "int32"
+        readOnly: true
+        x-nullable: false
+      Height:
+        type: "integer"
+        format: "int32"
+        readOnly: true
+        x-nullable: false
+      ImageUri:
+        type: "string"
+        readOnly: true
+        x-nullable: true
+      ThumbnailUri:
+        type: "string"
+        readOnly: true
+        x-nullable: true
+      Tags:
+        type: "array"
+        items:
+          $ref: "#/definitions/ImageTag"
+        x-nullable: true
+      Predictions:
+        type: "array"
+        items:
+          $ref: "#/definitions/PredictionTag"
+        x-nullable: true
+    description: "Image model to be sent as JSON"
+    example:
+      ThumbnailUri: "ThumbnailUri"
+      Predictions:
+      - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Probability: 1.4658129
+        Tag: "Tag"
+      - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Probability: 1.4658129
+        Tag: "Tag"
+      Height: 6
+      Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      ImageUri: "ImageUri"
+      Width: 0
+      Tags:
+      - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Created: "2000-01-23T04:56:07.000+00:00"
+      - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Created: "2000-01-23T04:56:07.000+00:00"
+      Created: "2000-01-23T04:56:07.000+00:00"
+    x-nullable: true
+  ImageTag:
+    type: "object"
+    properties:
+      TagId:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      Created:
+        type: "string"
+        format: "date-time"
+        readOnly: true
+        x-nullable: false
+    example:
+      TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Created: "2000-01-23T04:56:07.000+00:00"
+    x-nullable: true
+  PredictionTag:
+    type: "object"
+    properties:
+      TagId:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      Tag:
+        type: "string"
+        readOnly: true
+        x-nullable: true
+      Probability:
+        type: "number"
+        format: "float"
+        readOnly: true
+        x-nullable: false
+    example:
+      TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Probability: 1.4658129
+      Tag: "Tag"
+    x-nullable: true
+  ImageCreateSummary:
+    type: "object"
+    properties:
+      IsBatchSuccessful:
+        type: "boolean"
+        readOnly: true
+        x-nullable: false
+      Images:
+        type: "array"
+        items:
+          $ref: "#/definitions/ImageCreateResult"
+        x-nullable: true
+    example:
+      Images:
+      - Status: "OK"
+        SourceUrl: "SourceUrl"
+        Image:
+          ThumbnailUri: "ThumbnailUri"
+          Predictions:
+          - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+            Probability: 1.4658129
+            Tag: "Tag"
+          - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+            Probability: 1.4658129
+            Tag: "Tag"
+          Height: 6
+          Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          ImageUri: "ImageUri"
+          Width: 0
+          Tags:
+          - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+            Created: "2000-01-23T04:56:07.000+00:00"
+          - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+            Created: "2000-01-23T04:56:07.000+00:00"
+          Created: "2000-01-23T04:56:07.000+00:00"
+      - Status: "OK"
+        SourceUrl: "SourceUrl"
+        Image:
+          ThumbnailUri: "ThumbnailUri"
+          Predictions:
+          - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+            Probability: 1.4658129
+            Tag: "Tag"
+          - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+            Probability: 1.4658129
+            Tag: "Tag"
+          Height: 6
+          Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          ImageUri: "ImageUri"
+          Width: 0
+          Tags:
+          - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+            Created: "2000-01-23T04:56:07.000+00:00"
+          - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+            Created: "2000-01-23T04:56:07.000+00:00"
+          Created: "2000-01-23T04:56:07.000+00:00"
+      IsBatchSuccessful: true
+    x-nullable: true
+  ImageCreateResult:
+    type: "object"
+    properties:
+      SourceUrl:
+        type: "string"
+        readOnly: true
+        x-nullable: true
+      Status:
+        type: "string"
+        readOnly: true
+        enum:
+        - "OK"
+        - "OKDuplicate"
+        - "ErrorSource"
+        - "ErrorImageFormat"
+        - "ErrorImageSize"
+        - "ErrorStorage"
+        - "ErrorLimitExceed"
+        - "ErrorTagLimitExceed"
+        - "ErrorUnknown"
+        x-nullable: false
+      Image:
+        $ref: "#/definitions/Image"
+    example:
+      Status: "OK"
+      SourceUrl: "SourceUrl"
+      Image:
+        ThumbnailUri: "ThumbnailUri"
+        Predictions:
+        - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          Probability: 1.4658129
+          Tag: "Tag"
+        - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          Probability: 1.4658129
+          Tag: "Tag"
+        Height: 6
+        Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        ImageUri: "ImageUri"
+        Width: 0
+        Tags:
+        - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          Created: "2000-01-23T04:56:07.000+00:00"
+        - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          Created: "2000-01-23T04:56:07.000+00:00"
+        Created: "2000-01-23T04:56:07.000+00:00"
+    x-nullable: true
+  ImageFileCreateBatch:
+    type: "object"
+    properties:
+      Images:
+        type: "array"
+        items:
+          $ref: "#/definitions/ImageFileCreateEntry"
+        x-nullable: true
+      TagIds:
+        type: "array"
+        items:
+          type: "string"
+          format: "uuid"
+          x-nullable: false
+        x-nullable: true
+    example:
+      TagIds:
+      - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Images:
+      - Contents: "Contents"
+        TagIds:
+        - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Name: "Name"
+      - Contents: "Contents"
+        TagIds:
+        - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Name: "Name"
+    x-nullable: true
+  ImageFileCreateEntry:
+    type: "object"
+    properties:
+      Name:
+        type: "string"
+        x-nullable: true
+      Contents:
+        type: "string"
+        format: "byte"
+        pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+        x-nullable: true
+      TagIds:
+        type: "array"
+        items:
+          type: "string"
+          format: "uuid"
+          x-nullable: false
+        x-nullable: true
+    example:
+      Contents: "Contents"
+      TagIds:
+      - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Name: "Name"
+    x-nullable: true
+  ImageUrlCreateBatch:
+    type: "object"
+    properties:
+      Images:
+        type: "array"
+        items:
+          $ref: "#/definitions/ImageUrlCreateEntry"
+        x-nullable: true
+      TagIds:
+        type: "array"
+        items:
+          type: "string"
+          format: "uuid"
+          x-nullable: false
+        x-nullable: true
+    example:
+      TagIds:
+      - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Images:
+      - TagIds:
+        - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Url: "Url"
+      - TagIds:
+        - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Url: "Url"
+    x-nullable: true
+  ImageUrlCreateEntry:
+    type: "object"
+    properties:
+      Url:
+        type: "string"
+        x-nullable: true
+      TagIds:
+        type: "array"
+        items:
+          type: "string"
+          format: "uuid"
+          x-nullable: false
+        x-nullable: true
+    example:
+      TagIds:
+      - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Url: "Url"
+    x-nullable: true
+  ImageIdCreateBatch:
+    type: "object"
+    properties:
+      Images:
+        type: "array"
+        items:
+          $ref: "#/definitions/ImageIdCreateEntry"
+        x-nullable: true
+      TagIds:
+        type: "array"
+        items:
+          type: "string"
+          format: "uuid"
+          x-nullable: false
+        x-nullable: true
+    example:
+      TagIds:
+      - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Images:
+      - TagIds:
+        - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      - TagIds:
+        - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+    x-nullable: true
+  ImageIdCreateEntry:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+        format: "uuid"
+        x-nullable: false
+      TagIds:
+        type: "array"
+        items:
+          type: "string"
+          format: "uuid"
+          x-nullable: false
+        x-nullable: true
+    example:
+      TagIds:
+      - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      - "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+    x-nullable: true
+  ImageTagCreateBatch:
+    type: "object"
+    properties:
+      Tags:
+        type: "array"
+        items:
+          $ref: "#/definitions/ImageTagCreateEntry"
+        x-nullable: true
+    example:
+      Tags:
+      - ImageId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      - ImageId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+    x-nullable: true
+  ImageTagCreateEntry:
+    type: "object"
+    properties:
+      ImageId:
+        type: "string"
+        format: "uuid"
+        x-nullable: false
+      TagId:
+        type: "string"
+        format: "uuid"
+        x-nullable: false
+    example:
+      ImageId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+    x-nullable: true
+  ImageTagCreateSummary:
+    type: "object"
+    properties:
+      Created:
+        type: "array"
+        items:
+          $ref: "#/definitions/ImageTagCreateEntry"
+        x-nullable: true
+      Duplicated:
+        type: "array"
+        items:
+          $ref: "#/definitions/ImageTagCreateEntry"
+        x-nullable: true
+      Exceeded:
+        type: "array"
+        items:
+          $ref: "#/definitions/ImageTagCreateEntry"
+        x-nullable: true
+    example:
+      Duplicated:
+      - ImageId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      - ImageId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Exceeded:
+      - ImageId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      - ImageId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Created:
+      - ImageId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      - ImageId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+    x-nullable: true
+  PredictionQueryToken:
+    type: "object"
+    properties:
+      Session:
+        type: "string"
+        x-nullable: true
+      Continuation:
+        type: "string"
+        x-nullable: true
+      MaxCount:
+        type: "integer"
+        format: "int32"
+        x-nullable: false
+      OrderBy:
+        type: "string"
+        enum:
+        - "Newest"
+        - "Oldest"
+        - "Suggested"
+        x-nullable: false
+      Tags:
+        type: "array"
+        items:
+          $ref: "#/definitions/PredictionQueryTag"
+        x-nullable: true
+      IterationId:
+        type: "string"
+        format: "uuid"
+        x-nullable: true
+      StartTime:
+        type: "string"
+        format: "date-time"
+        x-nullable: true
+      EndTime:
+        type: "string"
+        format: "date-time"
+        x-nullable: true
+      Application:
+        type: "string"
+        x-nullable: true
+    example:
+      OrderBy: "Newest"
+      Continuation: "Continuation"
+      EndTime: "2000-01-23T04:56:07.000+00:00"
+      IterationId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      StartTime: "2000-01-23T04:56:07.000+00:00"
+      MaxCount: 0
+      Application: "Application"
+      Tags:
+      - MaxThreshold: 1.4658129
+        MinThreshold: 6.0274563
+        Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      - MaxThreshold: 1.4658129
+        MinThreshold: 6.0274563
+        Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Session: "Session"
+    x-nullable: true
+  PredictionQueryTag:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      MinThreshold:
+        type: "number"
+        format: "float"
+        readOnly: true
+        x-nullable: false
+      MaxThreshold:
+        type: "number"
+        format: "float"
+        readOnly: true
+        x-nullable: false
+    example:
+      MaxThreshold: 1.4658129
+      MinThreshold: 6.0274563
+      Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+    x-nullable: true
+  PredictionQuery:
+    type: "object"
+    properties:
+      Results:
+        type: "array"
+        items:
+          $ref: "#/definitions/Prediction"
+        x-nullable: true
+      Token:
+        $ref: "#/definitions/PredictionQueryToken"
+    example:
+      Results:
+      - Project: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Predictions:
+        - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          Probability: 1.4658129
+          Tag: "Tag"
+        - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          Probability: 1.4658129
+          Tag: "Tag"
+        ThumbnailUri: "ThumbnailUri"
+        Iteration: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        ImageUri: "ImageUri"
+        Created: "2000-01-23T04:56:07.000+00:00"
+      - Project: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Predictions:
+        - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          Probability: 1.4658129
+          Tag: "Tag"
+        - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+          Probability: 1.4658129
+          Tag: "Tag"
+        ThumbnailUri: "ThumbnailUri"
+        Iteration: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        ImageUri: "ImageUri"
+        Created: "2000-01-23T04:56:07.000+00:00"
+      Token:
+        OrderBy: "Newest"
+        Continuation: "Continuation"
+        EndTime: "2000-01-23T04:56:07.000+00:00"
+        IterationId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        StartTime: "2000-01-23T04:56:07.000+00:00"
+        MaxCount: 0
+        Application: "Application"
+        Tags:
+        - MaxThreshold: 1.4658129
+          MinThreshold: 6.0274563
+          Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        - MaxThreshold: 1.4658129
+          MinThreshold: 6.0274563
+          Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Session: "Session"
+    x-nullable: true
+  Prediction:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      Project:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      Iteration:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      Created:
+        type: "string"
+        format: "date-time"
+        readOnly: true
+        x-nullable: false
+      Predictions:
+        type: "array"
+        items:
+          $ref: "#/definitions/PredictionTag"
+        x-nullable: true
+      ImageUri:
+        type: "string"
+        readOnly: true
+        x-nullable: true
+      ThumbnailUri:
+        type: "string"
+        readOnly: true
+        x-nullable: true
+    description: "result of an image classification request"
+    example:
+      Project: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Predictions:
+      - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Probability: 1.4658129
+        Tag: "Tag"
+      - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Probability: 1.4658129
+        Tag: "Tag"
+      ThumbnailUri: "ThumbnailUri"
+      Iteration: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      ImageUri: "ImageUri"
+      Created: "2000-01-23T04:56:07.000+00:00"
+    x-nullable: true
+  ImageUrl:
+    type: "object"
+    properties:
+      Url:
+        type: "string"
+        x-nullable: true
+    example:
+      Url: "Url"
+    x-nullable: true
+  ImagePredictionResult:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      Project:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      Iteration:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      Created:
+        type: "string"
+        format: "date-time"
+        readOnly: true
+        x-nullable: false
+      Predictions:
+        type: "array"
+        items:
+          $ref: "#/definitions/ImageTagPrediction"
+        x-nullable: true
+    description: "result of an image prediction request"
+    example:
+      Project: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Predictions:
+      - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Probability: 0.8008282
+        Tag: "Tag"
+      - TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Probability: 0.8008282
+        Tag: "Tag"
+      Iteration: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Created: "2000-01-23T04:56:07.000+00:00"
+    x-nullable: true
+  ImageTagPrediction:
+    type: "object"
+    properties:
+      TagId:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      Tag:
+        type: "string"
+        readOnly: true
+        x-nullable: true
+      Probability:
+        type: "number"
+        format: "float"
+        readOnly: true
+        x-nullable: false
+    example:
+      TagId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Probability: 0.8008282
+      Tag: "Tag"
+    x-nullable: true
+  Project:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+        format: "uuid"
+        description: "Gets the project id"
+        readOnly: true
+        x-nullable: false
+      Name:
+        type: "string"
+        description: "Gets or sets the name of the project"
+        x-nullable: true
+      Description:
+        type: "string"
+        description: "Gets or sets the description of the project"
+        x-nullable: true
+      Settings:
+        description: "Gets or sets the project settings"
+        $ref: "#/definitions/ProjectSettings"
+      CurrentIterationId:
+        type: "string"
+        format: "uuid"
+        description: "Gets the current iteration id"
+        readOnly: true
+        x-nullable: true
+      Created:
+        type: "string"
+        format: "date-time"
+        description: "Gets the date this project was created"
+        readOnly: true
+        x-nullable: false
+      LastModified:
+        type: "string"
+        format: "date-time"
+        description: "Gets the date this project was last modifed"
+        readOnly: true
+        x-nullable: false
+      ThumbnailUri:
+        type: "string"
+        description: "Gets the thumbnail url representing the image"
+        readOnly: true
+        x-nullable: true
+    description: "Represents a project"
+    example:
+      LastModified: "2000-01-23T04:56:07.000+00:00"
+      Description: "Description"
+      ThumbnailUri: "ThumbnailUri"
+      CurrentIterationId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Settings:
+        DomainId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Name: "Name"
+      Created: "2000-01-23T04:56:07.000+00:00"
+    x-nullable: true
+  ProjectSettings:
+    type: "object"
+    properties:
+      DomainId:
+        type: "string"
+        format: "uuid"
+        description: "Gets or sets the id of the Domain to use with this project"
+        x-nullable: false
+    description: "Represents settings associated with a project"
+    example:
+      DomainId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+    x-nullable: true
+  Iteration:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+        format: "uuid"
+        description: "Gets the id of the iteration"
+        readOnly: true
+        x-nullable: false
+      Name:
+        type: "string"
+        description: "Gets or sets the name of the iteration"
+        x-nullable: true
+      IsDefault:
+        type: "boolean"
+        description: "Gets or sets a value indicating whether the iteration is the\
+          \ default iteration for the project"
+        x-nullable: false
+      Status:
+        type: "string"
+        description: "Gets the current iteration status"
+        readOnly: true
+        x-nullable: true
+      Created:
+        type: "string"
+        format: "date-time"
+        description: "Gets the time this iteration was completed"
+        readOnly: true
+        x-nullable: false
+      LastModified:
+        type: "string"
+        format: "date-time"
+        description: "Gets the time this iteration was last modified"
+        readOnly: true
+        x-nullable: false
+      TrainedAt:
+        type: "string"
+        format: "date-time"
+        description: "Gets the time this iteration was last modified"
+        readOnly: true
+        x-nullable: true
+      ProjectId:
+        type: "string"
+        format: "uuid"
+        description: "Gets the project id of the iteration"
+        readOnly: true
+        x-nullable: false
+      Exportable:
+        type: "boolean"
+        description: "Whether the iteration can be exported to another format for\
+          \ download"
+        readOnly: true
+        x-nullable: false
+      DomainId:
+        type: "string"
+        format: "uuid"
+        description: "Get or sets a guid of the domain the iteration has been trained\
+          \ on"
+        readOnly: true
+        x-nullable: true
+    description: "Iteration model to be sent over JSON"
+    example:
+      IsDefault: true
+      Status: "Status"
+      LastModified: "2000-01-23T04:56:07.000+00:00"
+      Exportable: true
+      DomainId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      ProjectId: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      TrainedAt: "2000-01-23T04:56:07.000+00:00"
+      Name: "Name"
+      Created: "2000-01-23T04:56:07.000+00:00"
+    x-nullable: true
+  IterationPerformance:
+    type: "object"
+    properties:
+      PerTagPerformance:
+        type: "array"
+        description: "Gets the per-tag performance details for this iteration"
+        items:
+          $ref: "#/definitions/TagPerformance"
+        x-nullable: true
+      Precision:
+        type: "number"
+        format: "double"
+        description: "Gets the precision"
+        readOnly: true
+        x-nullable: false
+      PrecisionStdDeviation:
+        type: "number"
+        format: "double"
+        description: "Gets the standard deviation for the precision"
+        readOnly: true
+        x-nullable: false
+      Recall:
+        type: "number"
+        format: "double"
+        description: "Gets the recall"
+        readOnly: true
+        x-nullable: false
+      RecallStdDeviation:
+        type: "number"
+        format: "double"
+        description: "Gets the standard deviation for the recall"
+        readOnly: true
+        x-nullable: false
+    description: "Represents the detailed performance data for a trained iteration"
+    example:
+      Precision: 5.63737665663332876420099637471139430999755859375
+      RecallStdDeviation: 9.301444243932575517419536481611430644989013671875
+      PerTagPerformance:
+      - Precision: 0.80082819046101150206595775671303272247314453125
+        RecallStdDeviation: 5.962133916683182377482808078639209270477294921875
+        Recall: 1.46581298050294517310021547018550336360931396484375
+        Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        PrecisionStdDeviation: 6.02745618307040320615897144307382404804229736328125
+        Name: "Name"
+      - Precision: 0.80082819046101150206595775671303272247314453125
+        RecallStdDeviation: 5.962133916683182377482808078639209270477294921875
+        Recall: 1.46581298050294517310021547018550336360931396484375
+        Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        PrecisionStdDeviation: 6.02745618307040320615897144307382404804229736328125
+        Name: "Name"
+      Recall: 7.061401241503109105224211816675961017608642578125
+      PrecisionStdDeviation: 2.3021358869347654518833223846741020679473876953125
+    x-nullable: true
+  TagPerformance:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+        format: "uuid"
+        readOnly: true
+        x-nullable: false
+      Name:
+        type: "string"
+        readOnly: true
+        x-nullable: true
+      Precision:
+        type: "number"
+        format: "double"
+        description: "Gets the precision"
+        readOnly: true
+        x-nullable: false
+      PrecisionStdDeviation:
+        type: "number"
+        format: "double"
+        description: "Gets the standard deviation for the precision"
+        readOnly: true
+        x-nullable: false
+      Recall:
+        type: "number"
+        format: "double"
+        description: "Gets the recall"
+        readOnly: true
+        x-nullable: false
+      RecallStdDeviation:
+        type: "number"
+        format: "double"
+        description: "Gets the standard deviation for the recall"
+        readOnly: true
+        x-nullable: false
+    description: "Represents performance data for a particular tag in a trained iteration"
+    example:
+      Precision: 0.80082819046101150206595775671303272247314453125
+      RecallStdDeviation: 5.962133916683182377482808078639209270477294921875
+      Recall: 1.46581298050294517310021547018550336360931396484375
+      Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      PrecisionStdDeviation: 6.02745618307040320615897144307382404804229736328125
+      Name: "Name"
+    x-nullable: true
+  Export:
+    type: "object"
+    properties:
+      Platform:
+        type: "string"
+        readOnly: true
+        enum:
+        - "CoreML"
+        - "TensorFlow"
+        x-nullable: false
+      Status:
+        type: "string"
+        readOnly: true
+        enum:
+        - "Exporting"
+        - "Failed"
+        - "Done"
+        x-nullable: false
+      DownloadUri:
+        type: "string"
+        readOnly: true
+        x-nullable: true
+    example:
+      Status: "Exporting"
+      Platform: "CoreML"
+      DownloadUri: "DownloadUri"
+    x-nullable: true
+  TagList:
+    type: "object"
+    properties:
+      Tags:
+        type: "array"
+        items:
+          $ref: "#/definitions/Tag"
+        x-nullable: true
+      TotalTaggedImages:
+        type: "integer"
+        format: "int32"
+        readOnly: true
+        x-nullable: false
+      TotalUntaggedImages:
+        type: "integer"
+        format: "int32"
+        readOnly: true
+        x-nullable: false
+    example:
+      TotalUntaggedImages: 1
+      TotalTaggedImages: 6
+      Tags:
+      - ImageCount: 0
+        Description: "Description"
+        Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Name: "Name"
+      - ImageCount: 0
+        Description: "Description"
+        Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        Name: "Name"
+    x-nullable: true
+  Tag:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+        format: "uuid"
+        description: "Gets the Tag ID"
+        readOnly: true
+        x-nullable: false
+      Name:
+        type: "string"
+        description: "Gets or sets the name of the tag"
+        x-nullable: true
+      Description:
+        type: "string"
+        description: "Gets or sets the description of the tag"
+        x-nullable: true
+      ImageCount:
+        type: "integer"
+        format: "int32"
+        description: "Gets the number of images with this tag"
+        readOnly: true
+        x-nullable: false
+    description: "Represents a Tag"
+    example:
+      ImageCount: 0
+      Description: "Description"
+      Id: "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+      Name: "Name"
+    x-nullable: true
+  DomainArray:
+    type: "array"
+    items:
+      $ref: "#/definitions/Domain"
+    x-nullable: true
+  ImageArray:
+    type: "array"
+    items:
+      $ref: "#/definitions/Image"
+    x-nullable: true
+  ProjectArray:
+    type: "array"
+    items:
+      $ref: "#/definitions/Project"
+    x-nullable: true
+  IterationArray:
+    type: "array"
+    items:
+      $ref: "#/definitions/Iteration"
+    x-nullable: true
+  ExportArray:
+    type: "array"
+    items:
+      $ref: "#/definitions/Export"
+    x-nullable: true
